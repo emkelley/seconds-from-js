@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seconds Since Last Javascript Framework Was Released</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<script>
+  async function increment() {
+    const response = await fetch('https://registry.npmjs.com/-/v1/search?text=framework&size=250')
+    const data = await response.json()
+    const { objects } = data
+    const [first] = objects.sort((a, b) => b.package.date.localeCompare(a.package.date))
+    const date = new Date(first.package.date)
+    const since = Date.now() - date.getTime()
+    this.seconds = (since / 1000).toFixed(2)
+    document.getElementById('sec').innerText = (since / 1000).toFixed(2).toLocaleString()
+  }
+  document.readyState === 'complete' ? increment() : window.addEventListener('load', increment)
+</script>
+
+<body class="h-screen w-screen flex flex-col items-center justify-center">
+  <h3 class="text-lg">It has been:</h3>
+  <h1 class="text-5xl"> <span id="sec"></span> seconds</h1>
+  <h3 class="text-lg">since the last Javascript framework was released on NPM.</h3>
+  <div class="mt-24 text-xs text-center">
+    <p class="mt-24">Made in 5 minutes as a joke by <a href="https://emk.dev">Eric Kelley</a></p>
+    <p class="mt-4">Source code on <a href="https://github.com/emkelley/dayssincejs">GitHub</a></p>
+  </div>
+
+</body>
+
+</html>
